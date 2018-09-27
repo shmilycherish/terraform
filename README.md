@@ -8,3 +8,5 @@ terraform plan 预览执行计划
 terraform apply 执行计划
 
 terraform destory 销毁机器
+
+terraform fmt 格式化tf文件
