@@ -69,11 +69,3 @@ resource "aws_route53_record" "www" {
   ttl     = "900"
   records = ["${aws_instance.server.public_ip}"]
 }
-
-output "web-public-dns" {
-  value = "${aws_instance.server.public_dns}"
-}
-
-output "web-public-ip" {
-  value = "${aws_instance.server.public_ip}"
-}
