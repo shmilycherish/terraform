@@ -1,13 +1,13 @@
 resource "aws_instance" "server" {
-  ami                    = "ami-08569b978cc4dfa10"
-  instance_type          = "t2.nano"
+  ami                    = "${var.ami_id}"
+  instance_type          = "${var.aws_instance_type}"
   vpc_security_group_ids = ["${aws_security_group.cherish.id}"]
-  key_name               = "cherish"
+  key_name               = "${var.key_name}"
 
   provisioner "file" {
     connection {
       user        = "ec2-user"
-      private_key = "${file("~/Downloads/study/cherish.pem")}"
+      private_key = "${file(var.key_path)}"
     }
 
     source      = "./html"
@@ -17,7 +17,7 @@ resource "aws_instance" "server" {
   provisioner "remote-exec" {
     connection {
       user        = "ec2-user"
-      private_key = "${file("~/Downloads/study/cherish.pem")}"
+      private_key = "${file(var.key_path)}"
     }
 
     inline = [
@@ -29,7 +29,7 @@ resource "aws_instance" "server" {
   }
 
   tags {
-    Name = "cy-terraform"
+    Name = "${var.tag_name}"
   }
 }
 
@@ -37,15 +37,15 @@ resource "aws_security_group" "cherish" {
   name = "cherish"
 
   ingress {
-    from_port   = "80"
-    to_port     = "80"
+    from_port   = "${var.http_port}"
+    to_port     = "${var.http_port}"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    from_port   = "22"
-    to_port     = "22"
+    from_port   = "${var.ssh_port}"
+    to_port     = "${var.ssh_port}"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -63,9 +63,9 @@ resource "aws_security_group" "cherish" {
 }
 
 resource "aws_route53_record" "www" {
-  name    = "cherish.workshop.oc-tw.net"
+  name    = "${var.domain_name}"
+  zone_id = "${var.zone_id}"
   type    = "A"
-  zone_id = "Z2F25J92GG08RZ"
   ttl     = "900"
   records = ["${aws_instance.server.public_ip}"]
 }

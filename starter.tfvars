@@ -1,0 +1,10 @@
+ami_id = "ami-08569b978cc4dfa10"
+aws_instance_type = "t2.nano"
+key_name = "cherish"
+key_path = "~/Downloads/study/cherish.pem"
+tag_name = "cherish-terraform"
+http_port = 80
+ssh_port = 22
+user_name = "cherish"
+zone_id = "Z2F25J92GG08RZ"
+domain_name = "cherish.workshop.oc-tw.net"
